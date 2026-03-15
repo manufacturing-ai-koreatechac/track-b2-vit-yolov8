@@ -224,6 +224,14 @@ transform = transforms.Compose([
 
 ---
 
+## 관련 공개 데이터셋
+
+| # | 데이터셋 | 설명 | 규모 | 링크 |
+|:-:|---------|------|:----:|------|
+| 1 | **NEU Surface Defect Database** | 열연강판 6가지 결함 유형 분류 데이터. ViT 전이학습 파인튜닝 벤치마크로 널리 사용. 본 실습 커스텀 데이터 유사 구조. | 1,800장 | [NEU](http://faculty.neu.edu.cn/yunhyan/NEU_surface_defect_database.html) |
+| 2 | **PCB Defect Dataset** | 인쇄회로기판(PCB) 6종 결함(오픈·쇼트·마우스바이트 등). YOLO 포맷 어노테이션 포함. 객체 탐지 파인튜닝에 최적. | 693장 | [Hugging Face](https://huggingface.co/datasets/fcakyon/pcb-defect-dataset) |
+| 3 | **DAGM 2007 Defect Dataset** | 독일 AI 학회 DAGM에서 제공한 합성 텍스처 결함 데이터. 10개 클래스 약한 레이블(Weak Label) 제공. 소수 데이터 학습 연구에 적합. | 10,600장 | [DAGM](https://resources.mpi-inf.mpg.de/conference/dagm/2007/prizes.html) |
+
 ## 📚 참고 자료
 
 ### 논문
