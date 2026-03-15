@@ -57,8 +57,9 @@ def load_yolo_model(model_path: str):
         if Path(model_path).exists():
             model = YOLO(model_path)
         else:
-            st.warning(f"YOLOv8 경로 없음: {model_path} → 기본 모델(yolov8n)로 실행")
-            model = YOLO("yolov8n.pt")
+            # model_path가 이미 "yolov8n.pt" 등 기본 모델명인 경우도 직접 로드
+            st.warning(f"YOLOv8 경로 없음: {model_path} → 기본 모델로 실행")
+            model = YOLO(model_path)
         return model
     except Exception as e:
         st.error(f"YOLOv8 모델 로드 실패: {e}")
@@ -178,11 +179,29 @@ def main():
             value="outputs/vit_defect_classifier",
             help="nb02에서 저장한 ViT 모델 디렉토리",
         )
-        yolo_model_path = st.text_input(
-            "YOLOv8 모델 경로",
-            value="outputs/yolo_defect/weights/best.pt",
-            help="nb03에서 훈련한 YOLOv8 가중치",
+
+        # YOLOv8 모델 선택 (사전 정의 모델 selectbox)
+        model_choice = st.selectbox(
+            "YOLOv8 모델 선택",
+            ["YOLOv8n (초경량, 추론 ↑)", "YOLOv8s (소형, 균형)"],
+            index=0,
+            help="YOLOv8n: 가장 빠른 추론 속도 / YOLOv8s: 속도와 정확도 균형",
         )
+        model_map = {
+            "YOLOv8n (초경량, 추론 ↑)": "yolov8n.pt",
+            "YOLOv8s (소형, 균형)": "yolov8s.pt",
+        }
+        selected_model = model_map[model_choice]
+
+        yolo_model_path = st.text_input(
+            "YOLOv8 모델 경로 (파인튜닝 시 직접 입력)",
+            value=f"outputs/yolo_defect/weights/best.pt",
+            help="nb03에서 훈련한 YOLOv8 가중치. 없으면 위에서 선택한 기본 모델 사용",
+        )
+        # 파인튜닝 가중치가 없을 경우 selectbox 선택 모델로 폴백
+        _effective_yolo = yolo_model_path if Path(yolo_model_path).exists() else selected_model
+        st.caption(f"실제 사용 모델: `{_effective_yolo}`")
+
         conf_threshold = st.slider(
             "YOLOv8 신뢰도 임계값", min_value=0.1, max_value=0.9, value=0.25, step=0.05
         )
@@ -198,7 +217,7 @@ def main():
     if load_models_btn or "models_loaded" not in st.session_state:
         with st.spinner("모델 로딩 중..."):
             vit_processor, vit_model = load_vit_model(vit_model_path)
-            yolo_model = load_yolo_model(yolo_model_path)
+            yolo_model = load_yolo_model(_effective_yolo)
             st.session_state.vit_processor = vit_processor
             st.session_state.vit_model = vit_model
             st.session_state.yolo_model = yolo_model
