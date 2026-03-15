@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-15T10:18:37.627755",
+  "signal_type": "object_detection",
+  "source": "track-b2/yolov8",
+  "line_id": "LINE-B",
+  "value": {
+    "defects_detected": 7,
+    "map50": 0.0,
+    "map50_95": 0.0,
+    "defect_classes": {
+      "scratch": 3,
+      "dent": 2,
+      "contamination": 2
+    },
+    "processing_fps": 45.2,
+    "alert": true,
+    "description": "YOLOv8 Fine-tuning 기반 실시간 불량 탐지"
+  },
+  "metadata": {
+    "model": "YOLOv8n-finetuned",
+    "input_size": "640x640",
+    "notebook": "03_yolov8_finetuning.ipynb"
+  }
+}

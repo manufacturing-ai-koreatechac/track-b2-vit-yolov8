@@ -3,7 +3,7 @@ names:
 - contamination
 - crack
 nc: 3
-path: ../data/defect_detection
+path: /Users/hongmartin/dev/pug.marp.pptx/test_koreatechedu/workspace/github-repos/track-b2-vit-yolov8/notebooks/../data/defect_detection
 test: images/test
 train: images/train
 val: images/val
